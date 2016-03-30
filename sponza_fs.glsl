@@ -48,6 +48,7 @@ vec3 pointSourceIntensity(in Light light, in vec3 source_colour)
 void main(void)
 {
 	vec3 combined_intensity = vec3(0.0, 0.0, 0.0);
+	vec3 checkered_colour;
 	
 	for(int i = 0; i < 7; i++)
 	{
@@ -62,10 +63,10 @@ void main(void)
 		const float block_size = 0.2;
 		vec2 uv = mod(text_coord, block_size) / block_size;
 		bool use_a = (uv.x > 0.5) ^^ (uv.y > 0.5);
-		vec3 colour = use_a ? colour_a : colour_b;
-		combined_intensity += colour;
+		checkered_colour = use_a ? colour_a : colour_b;
+		//combined_intensity += colour;
 	}
 
-	vec3 light_intensity = vec3((ambient_intensity * material_colour) + combined_intensity);
+	vec3 light_intensity = vec3((ambient_intensity * (checkered == 1 ? checkered_colour : material_colour)) + combined_intensity);
     fragment_colour = vec4(light_intensity, 1.0);
 }
